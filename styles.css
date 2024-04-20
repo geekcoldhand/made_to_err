@@ -1,0 +1,44 @@
+html {
+  position: relative;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #3e3d3d;
+}
+
+.flex-container {
+  width: 100%;
+  position: relative;
+}
+
+#container {
+  width: 90vw;
+  height: 50rem;
+  border: 2px solid #333;
+  position: relative;
+}
+
+.box {
+  position: absolute;
+  background-color: transparent;
+  border: none;
+  max-width: 200px;
+}
+
+.images {
+  width: 100%;
+  min-width: 100px;
+  /* height: 200px; */
+  object-fit: contain;
+  padding: 0;
+}
+
+.draggable {
+  cursor: pointer;
+}
