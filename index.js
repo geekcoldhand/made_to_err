@@ -27,6 +27,15 @@ function populateBoxesWithDelay(items) {
 populateBoxesWithDelay(dragItems);
 
 const itemStateAndPosition = {};
+dragItems.forEach((item, index) => {
+  item.addEventListener("touchstart", (e) => {
+    itemStateAndPosition[index] = {
+      isDragging: true,
+      offsetX: e.clientX - item.offsetLeft,
+      offsetY: e.clientY - item.offsetTop,
+    };
+  });
+});
 
 dragItems.forEach((item, index) => {
   item.addEventListener("mousedown", (e) => {
@@ -70,18 +79,21 @@ document.addEventListener("mouseup", () => {
 
 const handleAddMetaData = async (e) => {
   e.preventDefault();
- 
-  const productId =  e.target?.id;
+
+  const productId = e.target?.id;
   const date = Date.now();
   var today = new Date(date);
 
-  const response = await fetch(`http://127.0.0.1:5000/products/${productId}/clicks`, {
-    method: "PUT",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await fetch(
+    `http://127.0.0.1:5000/products/${productId}/clicks`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   if (response.ok) {
     //document.location.replace("/");
@@ -90,9 +102,9 @@ const handleAddMetaData = async (e) => {
   }
 };
 
-const handleShopProduct = (e)=>{
-  console.log("double clikked ");
-}
+const handleShopProduct = (e) => {
+  console.log("double clicked ");
+};
 
 imageButtonItem.forEach((itemElement) => {
   itemElement.addEventListener("click", handleAddMetaData);

@@ -1,28 +1,23 @@
 {
   "name": "made_to_error",
   "version": "1.0.0",
-  "description": "a demo of a basic emcom playground",
+  "description": "made to err sandbox",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node index.js",
-    "server": "nodemon server/server.js"
+    "dev": "node index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/geekcoldhand/Drag_Drop.git"
+    "url": "git+https://github.com/geekcoldhand/made_to_err.git"
   },
   "author": "HoratiousII",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/geekcoldhand/Drag_Drop/issues"
+    "url": "https://github.com/geekcoldhand/made_to_err.git"
   },
-  "homepage": "https://github.com/geekcoldhand/Drag_Drop#readme",
+  "homepage": "https://github.com/geekcoldhand/made_to_err/index.hmtl",
   "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "nodemon": "^3.1.0",
-    "pg": "^8.11.5"
+    "nodemon": "^3.1.0"
   }
 }
