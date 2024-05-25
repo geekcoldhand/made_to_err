@@ -69,8 +69,56 @@ document.addEventListener("mousemove", (e) => {
   });
 });
 
+document.addEventListener("mousemove", (e) => {
+  e.preventDefault();
+
+  // Iterate over boxState object and update positions if dragging
+  Object.keys(itemStateAndPosition).forEach((key) => {
+    const state = itemStateAndPosition[key];
+    if (state.isDragging) {
+      const item = dragItems[key];
+      const x = e.clientX - state.offsetX;
+      const y = e.clientY - state.offsetY;
+      const container = document.getElementById("container");
+
+      const maxX = container.offsetWidth - item.offsetWidth;
+      const maxY = container.offsetHeight - item.offsetHeight;
+
+      item.style.left = `${Math.min(Math.max(x, 0), maxX)}px`;
+      item.style.top = `${Math.min(Math.max(y, 0), maxY)}px`;
+    }
+  });
+});
+document.addEventListener("touchmove", (e) => {
+  e.preventDefault();
+
+  // Iterate over boxState object and update positions if dragging
+  Object.keys(itemStateAndPosition).forEach((key) => {
+    const state = itemStateAndPosition[key];
+    if (state.isDragging) {
+      const item = dragItems[key];
+      const x = e.clientX - state.offsetX;
+      const y = e.clientY - state.offsetY;
+      const container = document.getElementById("container");
+
+      const maxX = container.offsetWidth - item.offsetWidth;
+      const maxY = container.offsetHeight - item.offsetHeight;
+
+      item.style.left = `${Math.min(Math.max(x, 0), maxX)}px`;
+      item.style.top = `${Math.min(Math.max(y, 0), maxY)}px`;
+    }
+  });
+});
+
 // Add event listener for mouseup on the document
 document.addEventListener("mouseup", () => {
+  // Reset dragging state for all boxes
+  Object.keys(itemStateAndPosition).forEach((key) => {
+    itemStateAndPosition[key].isDragging = false;
+  });
+});
+
+document.addEventListener("touchend", () => {
   // Reset dragging state for all boxes
   Object.keys(itemStateAndPosition).forEach((key) => {
     itemStateAndPosition[key].isDragging = false;
