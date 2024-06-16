@@ -1,6 +1,15 @@
 //GWACH //Horatious Harris
 const dragItems = document.querySelectorAll(".box");
 const imageButtonItem = document.querySelectorAll(".img-button");
+const container = document.getElementById("container");
+
+function addDragEvents() {
+  for (let i = 0; i < dragItems.length; i++) {
+    dragItems[i].addEventListener("mousedown", handleMouseDown);
+    dragItems[i].addEventListener("mousemove", handleMouseMove);
+    dragItems[i].addEventListener("mouseup", handleMouseUp);
+  }
+}
 
 function randomizeDragItemPosition(items) {
   const container = document.getElementById("container");
@@ -16,15 +25,30 @@ function randomizeDragItemPosition(items) {
   items.style.top = `${randomY}px`;
 }
 
-function populateBoxesWithDelay(items) {
-//multiple items add to list
+function populateBoxesWithDelay() {
+  //multiple items add to list
+  const numCopies = 3;
+  var index = Math.floor(Math.random() * 2);
+  for (let i = 0; i < numCopies; i++) {
+    const clone = dragItems[3].cloneNode(true);
+    clone.addEventListener("mousedown", handleMouseDown);
+    clone.addEventListener("mousemove", handleMouseMove);
+    clone.addEventListener("mouseup", handleMouseUp);
+    clone.classList.add('draggable');
+    clone.classList.add('draggable');
+    clone.classList.add('draggable');
 
+    clone.draggable = true;
+    container.appendChild(clone);
+  }
+  addDragEvents();
 
+  var items = dragItems;
 
   items.forEach((item, index) => {
     setTimeout(() => {
       randomizeDragItemPosition(item);
-    }, index * 200); //staggered load
+    }, index * 100); //staggered load
   });
 }
 
@@ -32,13 +56,10 @@ function populateBoxesWithDelay(items) {
 populateBoxesWithDelay(dragItems);
 const itemStateAndPosition = {};
 
-
-
-
 /**
  * Touch Event Start
  */
-dragItems.forEach((item, index) => {
+const handleTouchStart = dragItems.forEach((item, index) => {
   item.addEventListener("touchstart", (e) => {
     e.preventDefault(); // Prevent scrolling on touch devices
     itemStateAndPosition[index] = {
@@ -52,20 +73,21 @@ dragItems.forEach((item, index) => {
 /**
  * Mouse Event Start
  */
-dragItems.forEach((item, index) => {
-  item.addEventListener("mousedown", (e) => {
-    itemStateAndPosition[index] = {
-      isDragging: true,
-      offsetX: e.clientX - item.offsetLeft,
-      offsetY: e.clientY - item.offsetTop,
-    };
+function handleMouseDown(item, index) {
+  dragItems.forEach((item, index) => {
+    item.addEventListener("mousedown", (e) => {
+      itemStateAndPosition[index] = {
+        isDragging: true,
+        offsetX: e.clientX - item.offsetLeft,
+        offsetY: e.clientY - item.offsetTop,
+      };
+    });
   });
-});
-
+}
 /**
- * Touch Move 
+ * Touch Move
  */
-document.addEventListener("touchmove", (e) => {
+const handleTouchMove = document.addEventListener("touchmove", (e) => {
   // Iterate over itemStateAndPosition object and update positions if dragging
   Object.keys(itemStateAndPosition).forEach((key) => {
     const state = itemStateAndPosition[key];
@@ -88,41 +110,45 @@ document.addEventListener("touchmove", (e) => {
 /**
  * Mouse Move
  */
-document.addEventListener("mousemove", (e) => {
-  e.preventDefault();
+function handleMouseMove(e) {
+  document.addEventListener("mousemove", (e) => {
+    e.preventDefault();
 
-  // Iterate over boxState object and update positions if dragging
-  Object.keys(itemStateAndPosition).forEach((key) => {
-    const state = itemStateAndPosition[key];
-    if (state.isDragging) {
-      const item = dragItems[key];
-      const x = e.clientX - state.offsetX;
-      const y = e.clientY - state.offsetY;
-      const container = document.getElementById("container");
+    // Iterate over boxState object and update positions if dragging
+    Object.keys(itemStateAndPosition).forEach((key) => {
+      const state = itemStateAndPosition[key];
+      if (state.isDragging) {
+        const item = dragItems[key];
+        const x = e.clientX - state.offsetX;
+        const y = e.clientY - state.offsetY;
+        const container = document.getElementById("container");
 
-      const maxX = container.offsetWidth - item.offsetWidth;
-      const maxY = container.offsetHeight - item.offsetHeight;
+        const maxX = container.offsetWidth - item.offsetWidth;
+        const maxY = container.offsetHeight - item.offsetHeight;
 
-      item.style.left = `${Math.min(Math.max(x, 0), maxX)}px`;
-      item.style.top = `${Math.min(Math.max(y, 0), maxY)}px`;
-    }
+        item.style.left = `${Math.min(Math.max(x, 0), maxX)}px`;
+        item.style.top = `${Math.min(Math.max(y, 0), maxY)}px`;
+      }
+    });
   });
-});
+}
 
 /**
  * Mouse Up End
  */
-document.addEventListener("mouseup", () => {
-  // Reset dragging state for all boxes
-  Object.keys(itemStateAndPosition).forEach((key) => {
-    itemStateAndPosition[key].isDragging = false;
+function handleMouseUp() {
+  document.addEventListener("mouseup", () => {
+    // Reset dragging state for all boxes
+    Object.keys(itemStateAndPosition).forEach((key) => {
+      itemStateAndPosition[key].isDragging = false;
+    });
   });
-});
+}
 
 /**
- * Touch End 
+ * Touch End
  */
-document.addEventListener("touchend", () => {
+const handleTouchEnd = document.addEventListener("touchend", () => {
   // Reset dragging state for all boxes
   Object.keys(itemStateAndPosition).forEach((key) => {
     itemStateAndPosition[key].isDragging = false;
@@ -150,10 +176,9 @@ const handleAddMetaData = async (e) => {
     //     },
     //   }
     // );
-
     // if (response.ok) {
     //   document.location.replace("/");
-    // } 
+    // }
   } catch (error) {
     console.error(error);
     alert("Failed to create post:::" + response);
@@ -163,4 +188,3 @@ const handleAddMetaData = async (e) => {
 imageButtonItem.forEach((itemElement, index) => {
   itemElement.addEventListener("click", handleAddMetaData);
 });
-
